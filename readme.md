@@ -9,7 +9,7 @@
 
 ## 📖 项目简介 (Introduction)
 
-这是一个基于 **WebGIS** 技术的郑州大学智慧校园服务系统。它集成了校园地图展示、POI 兴趣点查询、**校内路径规划 (最短路径导航)** 以及失物招领等功能。
+这是一个基于 **WebGIS** 技术的 **郑州大学智慧校园导览系统 (Smart Campus Visitor System)**。它专为校园场景设计，集成了校园高精度地图展示、POI 兴趣点查询、**校内路径规划 (最短路径导航)** 以及失物招领等功能，致力于打造便捷的**智慧游客系统**。
 
 本项目采用 **Docker** 容器化部署，无需本地安装繁杂的 GIS 环境，**一键即可运行**。
 
@@ -33,8 +33,7 @@
 
 ---
 
-方法一. Docker启动
-## 🚀 快速开始 (Quick Start)
+## 🚀 方式一：Docker 一键启动 (推荐)
 
 ### 1. 环境准备
 在开始之前，请确保你的电脑上已经安装了：
@@ -44,11 +43,13 @@
 ### 2. 下载项目
 打开终端 (Terminal/PowerShell/CMD)，执行：
 ```bash
+# 请将下面的 URL 替换为你实际的 GitHub 仓库地址
 git clone [https://github.com/你的用户名/ZZUVisitor-Service.git](https://github.com/你的用户名/ZZUVisitor-Service.git)
 cd ZZUVisitor-Service
 
 3. 一键启动 (最重要的一步！)
 确保 Docker Desktop 已经运行，然后在项目根目录下执行：
+
 docker compose up -d
 
 ⏳ 请耐心等待：
@@ -62,61 +63,69 @@ docker compose up -d
 4. 访问系统
 打开浏览器，访问： 👉 http://localhost
 
-## 💻 方式二：本地源码启动 (适合开发者)
+💻 方式二：本地源码启动 (适合开发者)
+如果你想修改代码或者不想使用 Docker，可以在本地手动搭建环境运行。
 
-   如果你想修改代码或者不想使用 Docker，可以在本地手动搭建环境运行。
+1. 前置准备 (Prerequisites)
+你需要在电脑上安装以下软件：
 
-   ### 1. 前置准备 (Prerequisites)
-   你需要在电脑上安装以下软件：
-   * **Java JDK 17+**
-   * **Node.js 16+** (建议使用 LTS 版本)
-   * **PostgreSQL 16** (数据库)
-   * **PostGIS 插件** (必须安装)
-   * **pgRouting 插件** (必须安装，这是最容易报错的一步！)
+Java JDK 17+
 
-   ### 2. 数据库配置 (最关键的一步)
+Node.js 16+ (建议使用 LTS 版本)
 
-   1.  **安装插件**：在安装 PostgreSQL 后，请务必使用 Application Stack Builder 安装 `PostGIS` 扩展（通常 pgRouting 会包含在 PostGIS 的安装包选项中，或者需要单独下载）。
-       * *注意：Windows 用户安装 pgRouting 可能比较麻烦，务必确保 `CREATE EXTENSION pgrouting;` 能在你的本地数据库执行成功。*
-   2.  **创建数据库**：新建一个名为 `zzu_db` 的数据库。
-   3.  **导入数据**：
-       * 先运行 `sql/schema.sql` (建立表结构)。
-       * 再运行 `sql/data.sql` (导入数据)。
+PostgreSQL 16 (数据库)
 
-   ### 3. 后端启动 (Spring Boot)
+PostGIS 插件 (必须安装)
 
-   1.  进入后端目录：`cd zzvisitor-backend`
-   2.  **修改配置**：打开 `src/main/resources/application.yml`，修改数据库连接信息：
-       ```yaml
-       spring:
-         datasource:
-           # 如果是本地启动，这里要填 localhost，而不是 docker 里的 db
-           url: jdbc:postgresql://localhost:5432/zzu_db
-           username: postgres
-           password: 你的数据库密码
-       ```
-   3.  **启动项目**：
-       * **命令行**：`mvn spring-boot:run`
-       * **IDEA**：直接找到 `VisitorServiceApplication.java` 右键 Run。
+pgRouting 插件 (必须安装，这是最容易报错的一步！)
 
-   ### 4. 前端启动 (Vue)
+2. 数据库配置 (最关键的一步)
+安装插件：在安装 PostgreSQL 后，请务必使用 Application Stack Builder 安装 PostGIS 扩展（通常 pgRouting 会包含在 PostGIS 的安装包选项中，或者需要单独下载）。
 
-   1.  进入前端目录：`cd zzvisitor-frontend`
-   2.  **安装依赖**：
-       ```bash
-       npm install
-       # 或者使用淘宝镜像
-       npm install --registry=[https://registry.npmmirror.com](https://registry.npmmirror.com)
-       ```
-   3.  **启动开发服务器**：
-       ```bash
-       npm run dev
-       # 或者
-       npm run serve
-       ```
-   4.  访问：`http://localhost:8080` (端口视具体配置而定)
+注意：Windows 用户安装 pgRouting 可能比较麻烦，务必确保 CREATE EXTENSION pgrouting; 能在你的本地数据库执行成功。
 
-   ---
+创建数据库：新建一个名为 zzu_db 的数据库。
+
+导入数据：
+
+先运行 sql/schema.sql (建立表结构)。
+
+再运行 sql/data.sql (导入数据)。
+
+3. 后端启动 (Spring Boot)
+进入后端目录：cd zzvisitor-backend
+
+修改配置：打开 src/main/resources/application.yml，修改数据库连接信息：
+
+spring:
+  datasource:
+    # 如果是本地启动，这里要填 localhost，而不是 docker 里的 db
+    url: jdbc:postgresql://localhost:5432/zzu_db
+    username: postgres
+    password: 你的数据库密码
+
+启动项目：
+
+命令行：mvn spring-boot:run
+
+IDEA：直接找到 VisitorServiceApplication.java 右键 Run。
+
+4. 前端启动 (Vue)
+进入前端目录：cd zzvisitor-frontend
+
+安装依赖：
+npm install
+# 或者使用淘宝镜像
+npm install --registry=[https://registry.npmmirror.com](https://registry.npmmirror.com)
+
+启动开发服务器：
+npm run dev
+# 或者
+npm run serve
+
+访问：http://localhost:8080 (端口视具体配置而定)
+
+🆚 启动方式对比
 
 特性,Docker 启动 (推荐小白),本地源码启动 (推荐开发)
 上手难度,⭐ (极低，一键运行),⭐⭐⭐⭐ (较高，要配环境)
@@ -124,8 +133,6 @@ docker compose up -d
 数据库,镜像自带全套插件，稳,pgRouting 在 Windows 上极其难装
 修改代码,修改后需要重新打包镜像，慢,修改后热更新，快
 用途,演示、部署、交付,写代码、调试 Bug
-
-
 
 📂 目录结构说明
 
@@ -138,15 +145,16 @@ ZZUVisitor-Service
 ├── zzvisitor-frontend/  # 前端 Vue 源码
 └── README.md            # 项目说明文档
 
-⚠️ 给你的特别建议
-鉴于我们在解决 pgRouting 插件时遇到的巨大困难，强烈建议：
+💡 混合开发建议 (强烈推荐)
+鉴于我们在解决 pgRouting 插件时遇到的巨大困难，强烈建议开发时采用混合模式：
 
-1.数据库依然用 Docker 跑：保留 docker-compose.yml 里的 db 服务。
+数据库依然用 Docker 跑：保留 docker-compose.yml 里的 db 服务运行。
 
-2.代码在本地跑：在 IDEA 里运行 Java，在 VS Code 里运行 Vue。
+代码在本地跑：在 IDEA 里运行 Java，在 VS Code 里运行 Vue。
 
-3.连接方式：把本地代码的数据库连接指向 localhost:5433 (我们在 Docker 里映射出来的那个端口)。
+连接方式：把本地后端代码的数据库连接指向 localhost:5433 (这是我们在 Docker 里映射出来的那个端口)。
 
+这样既能享受 Docker 数据库的省心，又能享受本地写代码的流畅！
 
 ❓ 常见问题 (Troubleshooting)
 Q1: 启动后访问 http://localhost 是一片空白或报错？
@@ -178,12 +186,29 @@ Q4: 怎么彻底重置数据库？
 docker compose down -v
 docker compose up -d
 
-
 👨‍💻 开发者指南
 如果你想修改代码：
 
-1.修改前端：在 zzvisitor-frontend 目录下开发，修改后需重新构建镜像或挂载目录。
+修改前端：在 zzvisitor-frontend 目录下开发，修改后需重新构建镜像或挂载目录。
 
-2.修改后端：在 zzvisitor-backend 目录下开发 (JDK 17+)。
+修改后端：在 zzvisitor-backend 目录下开发 (JDK 17+)。
 
-3.修改数据库：将新的 SQL 语句更新到 sql/ 目录中。
+修改数据库：将新的 SQL 语句更新到 sql/ 目录中。
+
+
+***
+
+### 🏷️ 关于你需要的 GitHub 标签 (Topics)
+
+README 只是文档，要让 GitHub 的搜索功能识别你的项目标签（WebGIS、智慧校园等），你需要执行以下操作：
+
+1.  打开你的 GitHub 仓库主页。
+2.  在右上角 **About** (关于) 这一栏旁边，点击 ⚙️ **齿轮图标**。
+3.  在 **Topics** 输入框中，输入以下标签并回车（建议使用英文，搜索权重更高）：
+    * `webgis`
+    * `smart-campus` (智慧校园)
+    * `visitor-system` (游客系统)
+    * `java`
+    * `vue`
+    * `postgis`
+    * `pgrouting`

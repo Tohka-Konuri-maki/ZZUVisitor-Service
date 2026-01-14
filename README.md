@@ -10,6 +10,8 @@
 
 项目运行示例可以在**bilibiil**上搜索**基于vue2和spring boot设计与实现的郑州大学游客服务webgis系统**
 
+https://github.com/Tohka-Konuri-maki/ZZUVisitor-Service/issues/1#issue-3813934794
+
 ### **✨ 核心功能**
 
 * 🗺️ **校园地图**：基于 Leaflet/Mapbox 的高精度校园底图展示。  

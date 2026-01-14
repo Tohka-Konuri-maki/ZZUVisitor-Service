@@ -13,6 +13,9 @@
 # **项目截图**
 <img width="2554" height="1411" alt="Image" src="https://github.com/user-attachments/assets/4162fe06-1a18-4750-84fe-c60a3414e290" />
 
+# **路线规划**
+<img width="2559" height="1416" alt="Image" src="https://github.com/user-attachments/assets/b2a1c664-a5ad-49e8-9cb4-de051eefb1b0" />
+
 ### **✨ 核心功能**
 
 * 🗺️ **校园地图**：基于 Leaflet/Mapbox 的高精度校园底图展示。  

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # --- 服务1：PostGIS 数据库 ---
+  db:
+    image: pgrouting/pgrouting:16-3.5-3.6
+    container_name: zzu_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      # 自动执行 sql 文件夹里的脚本，小白最爱！
+      - ./sql:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/postgresql/data
+
+  # --- 服务2：Java 后端 ---
+  backend:
+    build: ./backend
+    container_name: zzu_backend
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      # 这里的 'db' 对应上面的服务名，Docker 会自动解析 IP
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres?useUnicode=true&characterEncoding=utf8&useSSL=false
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      - db
+
+  # --- 服务3：Vue 前端 (Nginx) ---
+  frontend:
+    build: ./frontend
+    container_name: zzu_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  db_data: # 数据持久化，防止重启丢失

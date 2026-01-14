@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.vistorservice.dao.BusRouteMapper">
+    <select id="findAll" resultType="com.campus.vistorservice.model.BusRoute">
+        SELECT id, name, stops, schedule,
+               ST_AsGeoJSON(ST_Transform(geom, 4326)) as geometry
+        FROM zzu_gongjiao
+    </select>
+</mapper>

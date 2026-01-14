@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.vistorservice.dao.LostFoundMapper">
+    <insert id="insert" parameterType="com.campus.vistorservice.model.LostFound">
+        INSERT INTO sys_lost_found (item_name, description, contact, lost_type, status, visitor_name, create_time, geom)
+        VALUES (#{itemName}, #{description}, #{contact}, #{lostType}, 0, #{visitorName}, NOW(),
+                ST_Transform(ST_SetSRID(ST_MakePoint(#{longitude}, #{latitude}), 4326), 3857))
+    </insert>
+
+    <select id="findAllActive" resultType="com.campus.vistorservice.model.LostFound">
+        SELECT id, item_name AS itemName, description, contact, lost_type AS lostType,
+               status, visitor_name AS visitorName, create_time AS createTime,
+               ST_AsGeoJSON(ST_Transform(geom, 4326)) AS geometry
+        FROM sys_lost_found WHERE status = 0 ORDER BY create_time DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM sys_lost_found WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.vistorservice.dao.PolygonMapper">
+    <resultMap id="PolygonResultMap" type="com.campus.vistorservice.model.PolygonModel">
+        <id column="gid" property="gid"/>
+        <result column="name" property="name"/>
+        <result column="geometry" property="geometry"/>
+    </resultMap>
+
+    <select id="selectPolygonByGid" resultMap="PolygonResultMap">
+        SELECT gid, name,
+               ST_AsGeoJSON(ST_Transform(ST_SetSRID(ST_GeomFromEWKB(decode(geom::text, 'hex')), 3857), 4326)) AS geometry
+        FROM zzu_polygon WHERE gid = #{gid}
+    </select>
+
+    <select id="selectAllPolygons" resultMap="PolygonResultMap">
+        SELECT gid, name,
+               ST_AsGeoJSON(ST_Transform(ST_SetSRID(ST_GeomFromEWKB(decode(geom::text, 'hex')), 3857), 4326)) AS geometry
+        FROM zzu_polygon
+    </select>
+
+    <select id="searchPolygonsByName" resultMap="PolygonResultMap">
+        SELECT gid, name,
+               ST_AsGeoJSON(ST_Transform(ST_SetSRID(ST_GeomFromEWKB(decode(geom::text, 'hex')), 3857), 4326)) AS geometry
+        FROM zzu_polygon WHERE name LIKE concat('%', #{name}, '%')
+    </select>
+</mapper>

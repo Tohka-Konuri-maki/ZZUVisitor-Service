@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.vistorservice.dao.SuggestionMapper">
+
+    <insert id="insert" parameterType="com.campus.vistorservice.model.Suggestion">
+        INSERT INTO sys_suggestion (visitor_name, content, create_time)
+        VALUES (#{visitorName}, #{content}, NOW())
+    </insert>
+
+    <select id="findAll" resultType="com.campus.vistorservice.model.Suggestion">
+        SELECT id, visitor_name AS visitorName, content, create_time AS createTime
+        FROM sys_suggestion
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

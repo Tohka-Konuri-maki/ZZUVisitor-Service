@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.vistorservice.dao.RouteMapper">
+    <select id="findNearestNode" resultType="java.lang.Integer">
+        SELECT source FROM zzu_road_noded
+        ORDER BY geom &lt;-&gt; ST_Transform(ST_SetSRID(ST_MakePoint(#{lon}, #{lat}), 4326), 3857) LIMIT 1
+    </select>
+
+    <select id="shortestPath" resultType="java.lang.String">
+        SELECT ST_AsGeoJSON(ST_Transform(ST_Union(geom), 4326)) as geojson
+        FROM (
+                 SELECT b.geom FROM pgr_dijkstra(
+                                            'SELECT id, source, target, length as cost FROM zzu_road_noded',
+                                            #{startNode}, #{endNode}, false
+                                    ) a JOIN zzu_road_noded b ON a.edge = b.id
+             ) as path_geom
+    </select>
+</mapper>
